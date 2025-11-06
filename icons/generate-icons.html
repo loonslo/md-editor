@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>图标生成器</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .icon-display { margin: 20px 0; }
+    canvas { border: 1px solid #ddd; margin: 10px; }
+    button { padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+    button:hover { background: #2980b9; }
+    .instructions { background: #f4f4f4; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Markdown Editor - 图标生成器</h1>
+
+  <div class="instructions">
+    <h3>使用说明：</h3>
+    <p>1. 点击下方按钮下载对应尺寸的PNG图标文件</p>
+    <p>2. 将下载的文件保存为 icon16.png, icon48.png, icon128.png</p>
+    <p>3. 将这些文件放入 icons/ 目录中</p>
+    <p>4. 重新加载Chrome扩展</p>
+  </div>
+
+  <div class="icon-display">
+    <h3>图标预览 (128x128)：</h3>
+    <canvas id="icon128" width="128" height="128"></canvas>
+    <br>
+    <button onclick="downloadCanvas('icon128', 'icon128.png')">下载 icon128.png</button>
+  </div>
+
+  <div class="icon-display">
+    <h3>图标预览 (48x48)：</h3>
+    <canvas id="icon48" width="48" height="48"></canvas>
+    <br>
+    <button onclick="downloadCanvas('icon48', 'icon48.png')">下载 icon48.png</button>
+  </div>
+
+  <div class="icon-display">
+    <h3>图标预览 (16x16)：</h3>
+    <canvas id="icon16" width="16" height="16"></canvas>
+    <br>
+    <button onclick="downloadCanvas('icon16', 'icon16.png')">下载 icon16.png</button>
+  </div>
+
+  <script>
+    function drawIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+
+      // Draw rounded rectangle background
+      const radius = size * 0.15;
+      ctx.fillStyle = '#3498db';
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(size - radius, 0);
+      ctx.quadraticCurveTo(size, 0, size, radius);
+      ctx.lineTo(size, size - radius);
+      ctx.quadraticCurveTo(size, size, size - radius, size);
+      ctx.lineTo(radius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw MD text
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${size * 0.4}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('MD', size / 2, size / 2);
+    }
+
+    function downloadCanvas(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Draw all icons on load
+    window.onload = function() {
+      drawIcon('icon128', 128);
+      drawIcon('icon48', 48);
+      drawIcon('icon16', 16);
+    };
+  </script>
+</body>
+</html>

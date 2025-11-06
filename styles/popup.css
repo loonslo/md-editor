@@ -1,0 +1,400 @@
+/* Markdown Editor Chrome Extension Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  width: 100vw;
+  height: 100vh;
+  max-width: 1400px;
+  max-height: 900px;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  background: #2c3e50;
+  color: #fff;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header h1 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar button {
+  background: #34495e;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.toolbar button:hover {
+  background: #4a5f7f;
+}
+
+.toolbar button:active {
+  background: #2c3e50;
+}
+
+/* Editor Container */
+.editor-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Panel Common Styles */
+.editor-panel,
+.preview-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.preview-panel {
+  border-left: 1px solid #ddd;
+}
+
+/* Panel Headers */
+.panel-header {
+  background: #ecf0f1;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+.panel-header span {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2c3e50;
+}
+
+.editor-tools,
+.preview-tools {
+  display: flex;
+  gap: 6px;
+}
+
+.editor-tools button,
+.preview-tools button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.editor-tools button:hover,
+.preview-tools button:hover {
+  background: #2980b9;
+}
+
+.editor-tools button:active,
+.preview-tools button:active {
+  background: #1c5a85;
+}
+
+/* Editor Textarea */
+#markdownInput {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  outline: none;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  background: #fafafa;
+}
+
+#markdownInput:focus {
+  background: #fff;
+}
+
+/* Preview Content */
+#markdownPreview {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+/* Footer */
+.footer {
+  background: #ecf0f1;
+  padding: 8px 16px;
+  border-top: 1px solid #ddd;
+  flex-shrink: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: #7f8c8d;
+}
+
+.stats span {
+  font-weight: 500;
+}
+
+/* Markdown Content Styling */
+#markdownPreview {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+#markdownPreview h1 {
+  font-size: 24px;
+  margin: 16px 0 12px 0;
+  border-bottom: 2px #3498db solid;
+  padding-bottom: 8px;
+}
+
+#markdownPreview h2 {
+  font-size: 20px;
+  margin: 14px 0 10px 0;
+  color: #2c3e50;
+}
+
+#markdownPreview h3 {
+  font-size: 18px;
+  margin: 12px 0 8px 0;
+  color: #34495e;
+}
+
+#markdownPreview h4 {
+  font-size: 16px;
+  margin: 10px 0 6px 0;
+}
+
+#markdownPreview p {
+  margin: 8px 0;
+}
+
+#markdownPreview a {
+  color: #3498db;
+  text-decoration: none;
+  border-bottom: 1px solid #3498db;
+  transition: color 0.2s;
+}
+
+#markdownPreview a:hover {
+  color: #2980b9;
+  border-bottom-color: #2980b9;
+}
+
+#markdownPreview code {
+  background: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  color: #e74c3c;
+}
+
+#markdownPreview pre {
+  background: #f4f4f4;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+#markdownPreview pre code {
+  background: transparent;
+  padding: 0;
+  color: #333;
+}
+
+#markdownPreview blockquote {
+  border-left: 4px #3498db solid;
+  margin: 10px 0;
+  padding: 8px 16px;
+  background: #f9f9f9;
+  color: #555;
+}
+
+#markdownPreview ul,
+#markdownPreview ol {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+#markdownPreview li {
+  margin: 4px 0;
+}
+
+#markdownPreview strong {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+#markdownPreview em {
+  font-style: italic;
+}
+
+#markdownPreview hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 16px 0;
+}
+
+#markdownPreview table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px 0;
+}
+
+#markdownPreview th,
+#markdownPreview td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+#markdownPreview th {
+  background: #f4f4f4;
+  font-weight: 600;
+}
+
+/* Scrollbar Styling */
+#markdownPreview::-webkit-scrollbar,
+#markdownInput::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#markdownPreview::-webkit-scrollbar-track,
+#markdownInput::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#markdownPreview::-webkit-scrollbar-thumb,
+#markdownInput::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+#markdownPreview::-webkit-scrollbar-thumb:hover,
+#markdownInput::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  .container {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .editor-container {
+    flex-direction: column;
+  }
+
+  .preview-panel {
+    border-left: none;
+    border-top: 1px solid #ddd;
+  }
+}
+
+/* Button states */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background: inherit;
+}
+
+/* Focus states for accessibility */
+button:focus-visible {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+textarea:focus-visible {
+  outline: 2px solid #3498db;
+  outline-offset: -2px;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Selection styling */
+::selection {
+  background: #3498db;
+  color: #fff;
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease-out;
+  z-index: 1000;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
