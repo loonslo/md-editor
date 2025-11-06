@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p styles scripts lib icons)",
+      "Bash(curl -L -o lib/marked.min.js https://cdn.jsdelivr.net/npm/marked/marked.min.js)",
+      "Bash(curl -L -o lib/highlight.min.js https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js)",
+      "Bash(tree -L 2 -I \"node_modules|.git|.claude|.kiro\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
