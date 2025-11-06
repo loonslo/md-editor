@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "Markdown 编辑器 & 格式化工具"
+  },
+  "extensionDescription": {
+    "message": "一个功能强大的Markdown编辑器，支持实时预览、格式化和快速复制"
+  },
+  "openNewTab": {
+    "message": "Markdown Editor - 点击在新标签页中打开"
+  }
+}

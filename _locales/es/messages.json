@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "Editor y Formateador de Markdown"
+  },
+  "extensionDescription": {
+    "message": "Un potente editor de Markdown con vista previa en tiempo real, formato y funciones de copia rápida"
+  },
+  "openNewTab": {
+    "message": "Editor Markdown - Clic para abrir en nueva pestaña"
+  }
+}
