@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "Markdown Editor & Formatter"
+  },
+  "extensionDescription": {
+    "message": "A powerful Markdown editor with real-time preview, formatting, and quick copy features"
+  },
+  "openNewTab": {
+    "message": "Markdown Editor - Click to open in new tab"
+  }
+}

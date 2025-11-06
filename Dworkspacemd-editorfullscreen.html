@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-i18n-title-key="extensionName">Markdown Editor</title>
-  <link rel="stylesheet" href="styles/popup.css">
+  <title data-i18n-title-key="extensionName">Markdown Editor - Fullscreen</title>
+  <link rel="stylesheet" href="styles/fullscreen.css">
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1 data-i18n="markdownEditor">Markdown Editor</h1>
+      <h1 data-i18n="extensionName">Markdown Editor</h1>
+      <div class="header-controls">
+        <button id="openInPopupBtn" data-i18n-title="viewInPopup">📤</button>
+        <button id="closeBtn" data-i18n-title="clear">✕</button>
+      </div>
       <div class="toolbar">
         <button id="formatBtn" data-i18n-title="format">📝</button>
         <button id="copyHtmlBtn" data-i18n-title="copyHTML">📋</button>
@@ -36,7 +40,7 @@
         <div class="panel-header">
           <span data-i18n="livePreview">Live Preview</span>
           <div class="preview-tools">
-            <button id="fullscreenBtn" data-i18n-title="fullscreen">⛶</button>
+            <span class="sync-indicator" id="syncIndicator">Sync</span>
           </div>
         </div>
         <div id="markdownPreview" class="preview-content"></div>
@@ -47,6 +51,7 @@
       <div class="stats">
         <span id="wordCount">0 <span data-i18n="wordCount">Words</span></span>
         <span id="charCount">0 <span data-i18n="charCount">Characters</span></span>
+        <span id="lastSaved"><span data-i18n="autoSaved">Auto saved</span></span>
       </div>
     </div>
   </div>
@@ -54,6 +59,6 @@
   <script src="lib/marked.min.js"></script>
   <script src="lib/highlight.min.js"></script>
   <script src="scripts/i18n.js"></script>
-  <script src="scripts/popup.js"></script>
+  <script src="scripts/fullscreen.js"></script>
 </body>
 </html>

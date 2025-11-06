@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Editor</title>
+  <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Markdown Editor</h1>
+      <div class="toolbar">
+        <button id="formatBtn" title="格式化">📝</button>
+        <button id="copyHtmlBtn" title="复制HTML">📋</button>
+        <button id="copyMarkdownBtn" title="复制Markdown">📄</button>
+        <button id="clearBtn" title="清空">🗑️</button>
+      </div>
+    </div>
+    
+    <div class="editor-container">
+      <div class="editor-panel">
+        <div class="panel-header">
+          <span>Markdown 编辑器</span>
+          <div class="editor-tools">
+            <button id="boldBtn" title="粗体">B</button>
+            <button id="italicBtn" title="斜体">I</button>
+            <button id="linkBtn" title="链接">🔗</button>
+            <button id="codeBtn" title="代码">{ }</button>
+          </div>
+        </div>
+        <textarea id="markdownInput" placeholder="在这里输入Markdown内容..."></textarea>
+      </div>
+      
+      <div class="preview-panel">
+        <div class="panel-header">
+          <span>实时预览</span>
+          <div class="preview-tools">
+            <button id="fullscreenBtn" title="全屏预览">⛶</button>
+          </div>
+        </div>
+        <div id="markdownPreview" class="preview-content"></div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="stats">
+        <span id="wordCount">字数: 0</span>
+        <span id="charCount">字符: 0</span>
+      </div>
+    </div>
+  </div>
+  
+  <script src="lib/marked.min.js"></script>
+  <script src="lib/highlight.min.js"></script>
+  <script src="scripts/popup.js"></script>
+</body>
+</html>

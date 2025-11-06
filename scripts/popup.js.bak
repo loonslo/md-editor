@@ -1,7 +1,4 @@
 // Markdown Editor Chrome Extension - Main Script
-n// Initialize i18n
-await I18N.init();
-I18N.updateUITexts();
 
 document.addEventListener('DOMContentLoaded', () => {
   const markdownInput = document.getElementById('markdownInput');
@@ -75,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
           this.wrapSelection('`', '`');
           break;
         case 'link':
-          const url = prompt(I18N.t('enterUrlPrompt'));
+          const url = prompt('请输入链接地址:');
           if (url) {
             const selectedText = this.textarea.value.substring(
               this.textarea.selectionStart,
@@ -180,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
       this.debounceTimer = setTimeout(() => {
         try {
           const html = marked.parse(markdown);
-          this.element.innerHTML = html || '<p><em><em>${I18N.t('''inputPlaceholder''')}</em></em></p>';
+          this.element.innerHTML = html || '<p><em>预览内容将在这里显示...</em></p>';
 
           // Apply syntax highlighting to code blocks
           if (window.hljs) {
@@ -189,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
           }
         } catch (error) {
-          this.element.innerHTML = `<p style="color: #e74c3c;">${I18N.t('''parseError''')}: ${error.message}</p>`;
+          this.element.innerHTML = `<p style="color: #e74c3c;">解析错误: ${error.message}</p>`;
         }
       }, 300);
     }
@@ -267,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } catch (err) {
         console.error('保存失败:', err);
-        showToast('I18N.t('''saveFailed''')', 'error');
+        showToast('保存失败，存储空间不足', 'error');
       }
     }
 
@@ -309,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chars = text.length;
 
     wordCount.textContent = `字数: ${words}`;
-    charCount.textContent = `${chars} <span data-i18n="charCount">${I18N.t('''charCount''')}</span>`;
+    charCount.textContent = `字符: ${chars}`;
   }
 
   function updatePreview() {
