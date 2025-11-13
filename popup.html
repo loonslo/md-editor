@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n-title-key="extensionName">Markdown Editor</title>
   <link rel="stylesheet" href="styles/popup.css">
+  <link rel="stylesheet" href="styles/drag-resize.css">
 </head>
 <body>
   <div class="container">
@@ -18,7 +19,7 @@
       </div>
     </div>
 
-    <div class="editor-container">
+    <div class="editor-container resizable-container">
       <div class="editor-panel">
         <div class="panel-header">
           <span data-i18n="markdownEditor">Markdown Editor</span>
@@ -31,6 +32,8 @@
         </div>
         <textarea id="markdownInput" data-i18n-placeholder="inputPlaceholder" placeholder="Enter your Markdown content here..."></textarea>
       </div>
+
+      <div class="resizer"></div>
 
       <div class="preview-panel">
         <div class="panel-header">
