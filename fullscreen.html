@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Markdown Editor - 全屏模式</title>
   <link rel="stylesheet" href="styles/fullscreen.css">
+  <link rel="stylesheet" href="styles/drag-resize.css">
 </head>
 <body>
   <div class="container">
@@ -22,7 +23,7 @@
       </div>
     </div>
 
-    <div class="editor-container">
+    <div class="editor-container resizable-container">
       <div class="editor-panel">
         <div class="panel-header">
           <span>Markdown 编辑器</span>
@@ -35,6 +36,8 @@
         </div>
         <textarea id="markdownInput" placeholder="在这里输入Markdown内容..."></textarea>
       </div>
+
+      <div class="resizer"></div>
 
       <div class="preview-panel">
         <div class="panel-header">

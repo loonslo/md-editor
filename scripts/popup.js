@@ -1,5 +1,6 @@
 // Markdown Editor Chrome Extension - Main Script
-n// Initialize i18n
+
+// Initialize i18n
 await I18N.init();
 I18N.updateUITexts();
 
@@ -42,8 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
       this.textarea.value = before + newText + after;
 
       const newCursorPos = start + newText.length + offsetStart;
-      this.textarea.focus();
-      this.textarea.setSelectionRange(newCursorPos, newCursorPos + offsetEnd);
+
+      // 确保DOM更新后再设置光标位置
+      setTimeout(() => {
+        this.textarea.focus();
+        this.textarea.setSelectionRange(newCursorPos, newCursorPos + offsetEnd);
+      }, 0);
     }
 
     wrapSelection(before, after = before) {
@@ -59,8 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
         newText +
         this.textarea.value.substring(end);
 
-      this.textarea.focus();
-      this.textarea.setSelectionRange(cursorPos, cursorPos);
+      // 确保DOM更新后再设置光标位置
+      setTimeout(() => {
+        this.textarea.focus();
+        this.textarea.setSelectionRange(cursorPos, cursorPos);
+      }, 0);
     }
 
     applyFormatting(type) {
@@ -442,6 +450,107 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('beforeunload', () => {
     saveToStorage();
   });
+
+  // Resizer for panel width adjustment
+  class Resizer {
+    constructor() {
+      this.resizer = document.querySelector('.resizer');
+      this.editorPanel = document.querySelector('.editor-panel');
+      this.previewPanel = document.querySelector('.preview-panel');
+      this.container = document.querySelector('.editor-container');
+
+      if (!this.resizer || !this.editorPanel || !this.previewPanel || !this.container) {
+        console.warn('Resizer elements not found');
+        return;
+      }
+
+      this.init();
+    }
+
+    init() {
+      this.isResizing = false;
+      this.startX = 0;
+      this.startEditorWidth = 0;
+      this.startPreviewWidth = 0;
+
+      this.resizer.addEventListener('mousedown', (e) => {
+        this.isResizing = true;
+        this.startX = e.clientX;
+        this.startEditorWidth = this.editorPanel.offsetWidth;
+        this.startPreviewWidth = this.previewPanel.offsetWidth;
+
+        this.resizer.classList.add('dragging');
+        document.body.classList.add('resizing');
+
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!this.isResizing) return;
+
+        const deltaX = e.clientX - this.startX;
+        const containerWidth = this.container.offsetWidth;
+        const newEditorWidth = this.startEditorWidth + deltaX;
+        const newPreviewWidth = this.startPreviewWidth - deltaX;
+
+        // Calculate percentages
+        const editorPercentage = (newEditorWidth / containerWidth) * 100;
+        const previewPercentage = (newPreviewWidth / containerWidth) * 100;
+
+        // Apply minimum width constraints (20% and 30% minimum)
+        const minEditorPercent = 20;
+        const minPreviewPercent = 20;
+
+        if (editorPercentage >= minEditorPercent && previewPercentage >= minPreviewPercent) {
+          this.editorPanel.style.setProperty('width', editorPercentage + '%', 'important');
+          this.previewPanel.style.setProperty('width', previewPercentage + '%', 'important');
+          this.editorPanel.style.setProperty('flex', 'none', 'important');
+          this.previewPanel.style.setProperty('flex', 'none', 'important');
+          this.editorPanel.style.setProperty('flex-grow', '0', 'important');
+          this.previewPanel.style.setProperty('flex-grow', '0', 'important');
+          this.editorPanel.style.setProperty('flex-shrink', '0', 'important');
+          this.previewPanel.style.setProperty('flex-shrink', '0', 'important');
+        }
+      });
+
+      document.addEventListener('mouseup', () => {
+        if (this.isResizing) {
+          this.isResizing = false;
+          this.resizer.classList.remove('dragging');
+          document.body.classList.remove('resizing');
+
+          // Save the current split ratio
+          const editorWidth = this.editorPanel.offsetWidth;
+          const containerWidth = this.container.offsetWidth;
+          const ratio = (editorWidth / containerWidth * 100).toFixed(2);
+          localStorage.setItem('markdown-editor-split-ratio', ratio);
+        }
+      });
+
+      // Restore saved split ratio on load
+      this.restoreSplitRatio();
+    }
+
+    restoreSplitRatio() {
+      const savedRatio = localStorage.getItem('markdown-editor-split-ratio');
+      if (savedRatio) {
+        const ratio = parseFloat(savedRatio);
+        const clampedRatio = Math.max(20, Math.min(80, ratio)); // Clamp between 20% and 80%
+        this.editorPanel.style.setProperty('width', clampedRatio + '%', 'important');
+        this.previewPanel.style.setProperty('width', (100 - clampedRatio) + '%', 'important');
+        this.editorPanel.style.setProperty('flex', 'none', 'important');
+        this.previewPanel.style.setProperty('flex', 'none', 'important');
+        this.editorPanel.style.setProperty('flex-grow', '0', 'important');
+        this.previewPanel.style.setProperty('flex-grow', '0', 'important');
+        this.editorPanel.style.setProperty('flex-shrink', '0', 'important');
+        this.previewPanel.style.setProperty('flex-shrink', '0', 'important');
+      }
+    }
+  }
+
+  // Initialize resizer
+  new Resizer();
 
   console.log('Markdown Editor initialized successfully');
 });
