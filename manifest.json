@@ -24,7 +24,7 @@
     "extension_pages": "script-src 'self'; object-src 'self'"
   },
   "web_accessible_resources": [{
-    "resources": ["lib/marked.min.js", "fullscreen.html", "fullscreen.js", "styles/fullscreen.css", "lib/highlight.min.js", "scripts/i18n.js"],
+    "resources": ["lib/marked.min.js", "lib/dompurify.min.js", "fullscreen.html", "fullscreen.js", "styles/fullscreen.css", "lib/highlight.min.js", "scripts/i18n.js", "scripts/language-switcher.js"],
     "matches": ["<all_urls>"]
   }]
 }

@@ -1,10 +1,9 @@
 // Markdown Editor Chrome Extension - Main Script
 
-// Initialize i18n
-await I18N.init();
-I18N.updateUITexts();
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Initialize i18n
+  await I18N.init();
+  I18N.updateUITexts();
   const markdownInput = document.getElementById('markdownInput');
   const markdownPreview = document.getElementById('markdownPreview');
   const wordCount = document.getElementById('wordCount');
@@ -15,14 +14,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const copyHtmlBtn = document.getElementById('copyHtmlBtn');
   const copyMarkdownBtn = document.getElementById('copyMarkdownBtn');
   const clearBtn = document.getElementById('clearBtn');
+  const exportHtmlBtn = document.getElementById('exportHtmlBtn');
+  const exportMdBtn = document.getElementById('exportMdBtn');
 
   // Editor tools
   const boldBtn = document.getElementById('boldBtn');
   const italicBtn = document.getElementById('italicBtn');
   const linkBtn = document.getElementById('linkBtn');
   const codeBtn = document.getElementById('codeBtn');
+  const searchBtn = document.getElementById('searchBtn');
+  const themeBtn = document.getElementById('themeBtn');
+  const previewThemeBtn = document.getElementById('previewThemeBtn');
+  const themeDropdown = document.getElementById('themeDropdown');
 
   const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+  // Search panel elements
+  const searchPanel = document.getElementById('searchPanel');
+  const searchInput = document.getElementById('searchInput');
+  const replaceInput = document.getElementById('replaceInput');
+  const searchCloseBtn = document.getElementById('searchCloseBtn');
+  const findNextBtn = document.getElementById('findNextBtn');
+  const findPrevBtn = document.getElementById('findPrevBtn');
+  const replaceBtn = document.getElementById('replaceBtn');
+  const replaceAllBtn = document.getElementById('replaceAllBtn');
 
   // Editor Manager
   class EditorManager {
@@ -44,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const newCursorPos = start + newText.length + offsetStart;
 
-      // 确保DOM更新后再设置光标位置
       setTimeout(() => {
         this.textarea.focus();
         this.textarea.setSelectionRange(newCursorPos, newCursorPos + offsetEnd);
@@ -52,32 +66,178 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     wrapSelection(before, after = before) {
+      // Save selection before button click changes focus
+      const text = this.textarea.value;
       const start = this.textarea.selectionStart;
       const end = this.textarea.selectionEnd;
-      const selectedText = this.textarea.value.substring(start, end);
+      const selectedText = text.substring(start, end);
 
+      // Toggle logic for bold: find ** around cursor or selection
+      if (before === '**' && after === '**') {
+        // Check if selection is exactly **text**
+        if (start < end && text.substring(start, end).match(/^\*\*(.+)\*\*$/s)) {
+          const unwrapped = text.substring(start, end).replace(/^\*\*(.+)\*\*$/s, '$1');
+          this.textarea.value = text.substring(0, start) + unwrapped + text.substring(end);
+          setTimeout(() => {
+            this.textarea.focus();
+            this.textarea.setSelectionRange(start, start + unwrapped.length);
+            updatePreview();
+            updateStats();
+          }, 0);
+          return;
+        }
+
+        // Find ** before cursor and ** after cursor
+        const textBefore = text.substring(0, start);
+        const textAfter = text.substring(start);
+        const openIndex = textBefore.lastIndexOf('**');
+        const closeIndex = textAfter.indexOf('**');
+
+        if (openIndex !== -1 && closeIndex !== -1) {
+          // Remove both ** markers
+          const beforePart = text.substring(0, openIndex);
+          const middlePart = text.substring(openIndex + 2, start);
+          const afterPart = text.substring(start + closeIndex + 2);
+          this.textarea.value = beforePart + middlePart + afterPart;
+          const newPos = beforePart.length + middlePart.length;
+          setTimeout(() => {
+            this.textarea.focus();
+            this.textarea.setSelectionRange(newPos, newPos);
+            updatePreview();
+            updateStats();
+          }, 0);
+          return;
+        }
+      }
+
+      // Toggle logic for italic: find * around cursor or selection
+      if (before === '*' && after === '*') {
+        // Check if selection is exactly *text* (but not **text**)
+        if (start < end) {
+          const sel = text.substring(start, end);
+          if (/^\*(.+)\*$/.test(sel) && !sel.startsWith('**')) {
+            const unwrapped = sel.replace(/^\*(.+)\*$/, '$1');
+            this.textarea.value = text.substring(0, start) + unwrapped + text.substring(end);
+            setTimeout(() => {
+              this.textarea.focus();
+              this.textarea.setSelectionRange(start, start + unwrapped.length);
+              updatePreview();
+              updateStats();
+            }, 0);
+            return;
+          }
+        }
+
+        // Find * before cursor and * after cursor (avoiding **)
+        const textBefore = text.substring(0, start);
+        let openIndex = -1;
+        for (let i = textBefore.length - 1; i >= 0; i--) {
+          if (textBefore.substring(i).startsWith('**')) {
+            i -= 1; // Skip **
+            continue;
+          }
+          if (textBefore[i] === '*') {
+            openIndex = i;
+            break;
+          }
+        }
+
+        let closeIndex = -1;
+        for (let i = 0; i < textAfter.length; i++) {
+          if (textAfter.substring(i).startsWith('**')) {
+            i += 1; // Skip **
+            continue;
+          }
+          if (textAfter[i] === '*') {
+            closeIndex = i;
+            break;
+          }
+        }
+
+        if (openIndex !== -1 && closeIndex !== -1) {
+          const beforePart = text.substring(0, openIndex);
+          const middlePart = text.substring(openIndex + 1, start);
+          const afterPart = text.substring(start + closeIndex + 1);
+          this.textarea.value = beforePart + middlePart + afterPart;
+          const newPos = beforePart.length + middlePart.length;
+          setTimeout(() => {
+            this.textarea.focus();
+            this.textarea.setSelectionRange(newPos, newPos);
+            updatePreview();
+            updateStats();
+          }, 0);
+          return;
+        }
+      }
+
+      // Add formatting
       const newText = before + selectedText + after;
       const cursorPos = start + before.length + selectedText.length;
 
       this.textarea.value =
-        this.textarea.value.substring(0, start) +
+        text.substring(0, start) +
         newText +
-        this.textarea.value.substring(end);
+        text.substring(end);
 
-      // 确保DOM更新后再设置光标位置
       setTimeout(() => {
         this.textarea.focus();
         this.textarea.setSelectionRange(cursorPos, cursorPos);
+        updatePreview();
+        updateStats();
       }, 0);
     }
 
-    applyFormatting(type) {
+    applyFormatting(type, savedStart, savedEnd) {
+      // Use saved selection if provided (from button click)
+      const start = savedStart !== undefined ? savedStart : this.textarea.selectionStart;
+      const end = savedEnd !== undefined ? savedEnd : this.textarea.selectionEnd;
+      const text = this.textarea.value;
+      const selectedText = text.substring(start, end);
+
       switch (type) {
         case 'bold':
-          this.wrapSelection('**', '**');
+          // Toggle bold: **text** <-> text
+          if (/^\*\*(.+)\*\*$/.test(selectedText)) {
+            // Remove **
+            const unwrapped = selectedText.replace(/^\*\*(.+)\*\*$/, '$1');
+            this.textarea.value = text.substring(0, start) + unwrapped + text.substring(end);
+          } else {
+            // Add **
+            this.textarea.value = text.substring(0, start) + '**' + selectedText + '**' + text.substring(end);
+          }
+          setTimeout(() => {
+            this.textarea.focus();
+            if (selectedText) {
+              this.textarea.setSelectionRange(start, start + (selectedText.startsWith('**') ? selectedText.length - 4 : selectedText.length + 4));
+            } else {
+              const newPos = text.substring(0, start).replace(/\*\*/g, '').length + 2;
+              this.textarea.setSelectionRange(newPos, newPos);
+            }
+            updatePreview();
+            updateStats();
+          }, 0);
           break;
         case 'italic':
-          this.wrapSelection('*', '*');
+          // Toggle italic: *text* <-> text
+          if (/^\*(.+)\*$/.test(selectedText) && !selectedText.startsWith('**')) {
+            // Remove *
+            const unwrapped = selectedText.replace(/^\*(.+)\*$/, '$1');
+            this.textarea.value = text.substring(0, start) + unwrapped + text.substring(end);
+          } else {
+            // Add *
+            this.textarea.value = text.substring(0, start) + '*' + selectedText + '*' + text.substring(end);
+          }
+          setTimeout(() => {
+            this.textarea.focus();
+            if (selectedText) {
+              this.textarea.setSelectionRange(start, start + (selectedText.startsWith('*') ? selectedText.length - 2 : selectedText.length + 2));
+            } else {
+              const newPos = text.substring(0, start).replace(/\*\*/g, '').length + 1;
+              this.textarea.setSelectionRange(newPos, newPos);
+            }
+            updatePreview();
+            updateStats();
+          }, 0);
           break;
         case 'code':
           this.wrapSelection('`', '`');
@@ -129,31 +289,29 @@ document.addEventListener('DOMContentLoaded', () => {
     formatMarkdown() {
       let text = this.textarea.value;
 
-      // Format headers - only if # is immediately followed by non-space character
-      // This prevents re-formatting already formatted headers
+      // Format headers
       text = text.replace(/(^|\n)(#{4})([^\s#\n]+)/g, '$1$2 $3');
       text = text.replace(/(^|\n)(#{3})([^\s#\n]+)/g, '$1$2 $3');
       text = text.replace(/(^|\n)(#{2})([^\s#\n]+)/g, '$1$2 $3');
       text = text.replace(/(^|\n)(#{1})([^\s#\n]+)/g, '$1$2 $3');
 
-      // Format bold - only format if already has ** ** but with wrong spacing
+      // Format bold
       text = text.replace(/\*\*([^*]+)\*\*/g, '**$1**');
 
-      // Format italic - only format if * is at start of word without space
-      // Use negative lookahead to avoid matching **
+      // Format italic
       text = text.replace(/(\s)\*([^*\n]+)\*/g, '$1* $2 *');
 
-      // Format code blocks - only if opening ``` doesn't have newline
+      // Format code blocks
       text = text.replace(/```(\w+)?\n?/g, (match) => {
         if (match.endsWith('\n')) return match;
         return match + '\n';
       });
 
-      // Format lists - only if list marker doesn't have space after it
+      // Format lists
       text = text.replace(/^(\s*)-\s*([^\s-])/gm, '$1- $2');
       text = text.replace(/^(\s*)(\d+)([^\d\.])/gm, '$1$2. $3');
 
-      // Format links - just ensure proper spacing
+      // Format links
       text = text.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '[$1]($2)');
 
       this.textarea.value = text;
@@ -162,22 +320,97 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     clear() {
-      if (confirm('确定要清空所有内容吗？此操作不可撤销。')) {
+      if (confirm(I18N.t('confirmClear'))) {
         this.textarea.value = '';
         updatePreview();
         updateStats();
         saveToStorage();
       }
     }
+
+    // Search functionality
+    findText(searchText, backward = false) {
+      const text = this.textarea.value;
+      const startPos = backward ? this.textarea.selectionStart - 1 : this.textarea.selectionStart;
+      const flags = backward ? 'g' : 'g';
+
+      // Escape special regex characters
+      const escapedSearch = searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedSearch, flags);
+
+      let match;
+      let foundPos = -1;
+
+      if (backward) {
+        // Find all matches and get the last one before cursor
+        const matches = [];
+        while ((match = regex.exec(text)) !== null) {
+          if (match.index < startPos) {
+            matches.push(match.index);
+          }
+        }
+        if (matches.length > 0) {
+          foundPos = matches[matches.length - 1];
+        }
+      } else {
+        regex.lastIndex = startPos;
+        match = regex.exec(text);
+        if (match) {
+          foundPos = match.index;
+        }
+      }
+
+      if (foundPos !== -1) {
+        this.textarea.focus();
+        this.textarea.setSelectionRange(foundPos, foundPos + searchText.length);
+        return true;
+      }
+      return false;
+    }
+
+    replaceText(searchText, replaceText) {
+      const start = this.textarea.selectionStart;
+      const end = this.textarea.selectionEnd;
+      const selectedText = this.textarea.value.substring(start, end);
+
+      if (selectedText === searchText) {
+        const before = this.textarea.value.substring(0, start);
+        const after = this.textarea.value.substring(end);
+        this.textarea.value = before + replaceText + after;
+        this.textarea.setSelectionRange(start, start + replaceText.length);
+        return true;
+      }
+      return false;
+    }
+
+    replaceAll(searchText, replaceText) {
+      const text = this.textarea.value;
+      const escapedSearch = searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escapedSearch, 'g');
+      this.textarea.value = text.replace(regex, replaceText);
+      return (text.match(regex) || []).length;
+    }
   }
 
-  // Preview Manager
+  // Preview Manager with XSS protection
   class PreviewManager {
     constructor(element, textarea) {
       this.element = element;
       this.textarea = textarea;
       this.debounceTimer = null;
       this.isSyncingScroll = false;
+    }
+
+    // Simple HTML sanitizer for XSS protection
+    sanitizeHtml(html) {
+      // Replace potentially dangerous characters
+      return html
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;')
+        .replace(/\//g, '&#x2F;');
     }
 
     update(markdown) {
@@ -187,8 +420,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       this.debounceTimer = setTimeout(() => {
         try {
-          const html = marked.parse(markdown);
-          this.element.innerHTML = html || '<p><em><em>${I18N.t('''inputPlaceholder''')}</em></em></p>';
+          const html = marked.parse(markdown || '');
+          // Sanitize the HTML if DOMPurify is available
+          let safeHtml = html;
+          if (typeof DOMPurify !== 'undefined') {
+            safeHtml = DOMPurify.sanitize(html, {
+              ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'span', 'div', 'hr', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
+              ALLOWED_ATTR: ['href', 'title', 'class', 'id', 'target', 'style']
+            });
+          }
+          this.element.innerHTML = safeHtml || '<p><em>' + I18N.t('inputPlaceholder') + '</em></p>';
 
           // Apply syntax highlighting to code blocks
           if (window.hljs) {
@@ -197,13 +438,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
           }
         } catch (error) {
-          this.element.innerHTML = `<p style="color: #e74c3c;">${I18N.t('''parseError''')}: ${error.message}</p>`;
+          this.element.innerHTML = '<p style="color: #e74c3c;">' + I18N.t('parseError') + ': ' + error.message + '</p>';
         }
-      }, 300);
+      }, 100); // Reduced delay for faster response
     }
 
     initScrollSync() {
-      // Sync preview scroll to editor scroll
       this.textarea.addEventListener('scroll', () => {
         if (this.isSyncingScroll) return;
 
@@ -227,10 +467,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'text/plain': new Blob([html], { type: 'text/plain' })
           })
         ]);
-        showToast('HTML已复制到剪贴板');
+        showToast(I18N.t('copiedToClipboard'));
       } catch (err) {
-        console.error('复制失败:', err);
-        showToast('复制失败，请检查权限设置', 'error');
+        console.error('Copy failed:', err);
+        showToast(I18N.t('copyFailed'), 'error');
       }
     }
 
@@ -238,10 +478,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const markdown = markdownInput.value;
       try {
         await navigator.clipboard.writeText(markdown);
-        showToast('Markdown已复制到剪贴板');
+        showToast(I18N.t('copiedToClipboard'));
       } catch (err) {
-        console.error('复制失败:', err);
-        showToast('复制失败，请检查权限设置', 'error');
+        console.error('Copy failed:', err);
+        showToast(I18N.t('copyFailed'), 'error');
       }
     }
 
@@ -257,10 +497,134 @@ document.addEventListener('DOMContentLoaded', () => {
             'text/plain': new Blob([markdown], { type: 'text/plain' })
           })
         ]);
-        showToast('富文本已复制到剪贴板');
+        showToast(I18N.t('copiedToClipboard'));
       } catch (err) {
-        console.error('复制失败:', err);
-        showToast('复制失败，请检查权限设置', 'error');
+        console.error('Copy failed:', err);
+        showToast(I18N.t('copyFailed'), 'error');
+      }
+    }
+  }
+
+  // Export Manager
+  class ExportManager {
+    async exportToHtml() {
+      const html = marked.parse(markdownInput.value);
+      const fullHtml = `<!DOCTYPE html>
+<html lang="${I18N.currentLang}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Export</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+    pre { background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; }
+    blockquote { border-left: 4px solid #ddd; margin: 0; padding-left: 20px; color: #666; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+${html}
+</body>
+</html>`;
+
+      const blob = new Blob([fullHtml], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'markdown-export.html';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(I18N.t('exportedHtml'));
+    }
+
+    async exportToMd() {
+      const blob = new Blob([markdownInput.value], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'markdown-export.md';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(I18N.t('exportedMd'));
+    }
+  }
+
+  // Theme Manager
+  class ThemeManager {
+    constructor() {
+      this.themes = ['light', 'dark'];
+      this.currentTheme = localStorage.getItem('markdown-editor-theme') || 'light';
+      this.init();
+    }
+
+    init() {
+      document.body.setAttribute('data-theme', this.currentTheme);
+      this.updateButtonIcon();
+    }
+
+    toggle() {
+      const currentIndex = this.themes.indexOf(this.currentTheme);
+      this.currentTheme = this.themes[(currentIndex + 1) % this.themes.length];
+      document.body.setAttribute('data-theme', this.currentTheme);
+      localStorage.setItem('markdown-editor-theme', this.currentTheme);
+      this.updateButtonIcon();
+      showToast(I18N.t('themeChanged') + ': ' + I18N.t(this.currentTheme + 'Theme'));
+    }
+
+    updateButtonIcon() {
+      if (themeBtn) {
+        themeBtn.textContent = this.currentTheme === 'dark' ? '☀️' : '🌙';
+      }
+    }
+  }
+
+  // Preview Theme Manager
+  class PreviewThemeManager {
+    constructor() {
+      this.themes = ['default', 'github', 'vuepress', 'minimal', 'technical'];
+      this.currentTheme = localStorage.getItem('markdown-editor-preview-theme') || 'default';
+      this.previewElement = markdownPreview;
+      this.init();
+    }
+
+    init() {
+      this.applyTheme(this.currentTheme);
+    }
+
+    applyTheme(theme) {
+      // Remove all theme classes
+      this.themes.forEach(t => {
+        this.previewElement.classList.remove('theme-' + t);
+      });
+      // Add new theme class
+      this.previewElement.classList.add('theme-' + theme);
+      this.currentTheme = theme;
+      localStorage.setItem('markdown-editor-preview-theme', theme);
+      this.updateActiveButton();
+    }
+
+    updateActiveButton() {
+      if (themeDropdown) {
+        themeDropdown.querySelectorAll('button').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.dataset.theme === this.currentTheme) {
+            btn.classList.add('active');
+          }
+        });
+      }
+    }
+
+    toggle() {
+      if (themeDropdown) {
+        themeDropdown.classList.toggle('show');
+      }
+    }
+
+    hide() {
+      if (themeDropdown) {
+        themeDropdown.classList.remove('show');
       }
     }
   }
@@ -274,8 +638,8 @@ document.addEventListener('DOMContentLoaded', () => {
           preferences: data.preferences || {}
         });
       } catch (err) {
-        console.error('保存失败:', err);
-        showToast('I18N.t('''saveFailed''')', 'error');
+        console.error('Save failed:', err);
+        showToast(I18N.t('saveFailed'), 'error');
       }
     }
 
@@ -287,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
           preferences: result.preferences || {}
         };
       } catch (err) {
-        console.error('加载失败:', err);
+        console.error('Load failed:', err);
         return { markdown: '', preferences: {} };
       }
     }
@@ -296,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         await chrome.storage.local.remove(['markdownContent']);
       } catch (err) {
-        console.error('清空失败:', err);
+        console.error('Clear failed:', err);
       }
     }
   }
@@ -305,6 +669,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const editor = new EditorManager(markdownInput);
   const preview = new PreviewManager(markdownPreview, markdownInput);
   const copyManager = new CopyManager();
+  const exportManager = new ExportManager();
+  const themeManager = new ThemeManager();
+  const previewThemeManager = new PreviewThemeManager();
   const storage = new StorageManager();
 
   // Initialize scroll sync
@@ -316,8 +683,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     const chars = text.length;
 
-    wordCount.textContent = `字数: ${words}`;
-    charCount.textContent = `${chars} <span data-i18n="charCount">${I18N.t('''charCount''')}</span>`;
+    wordCount.textContent = I18N.t('wordCount') + ': ' + words;
+    charCount.textContent = I18N.t('charCount') + ': ' + chars;
   }
 
   function updatePreview() {
@@ -327,7 +694,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function saveToStorage() {
     storage.save({
       markdown: markdownInput.value,
-      preferences: {}
+      preferences: {
+        theme: themeManager.currentTheme,
+        previewTheme: previewThemeManager.currentTheme
+      }
     });
   }
 
@@ -343,6 +713,27 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       toast.remove();
     }, 3000);
+  }
+
+  // Search panel functions
+  function toggleSearchPanel() {
+    if (searchPanel) {
+      const isVisible = searchPanel.style.display !== 'none';
+      searchPanel.style.display = isVisible ? 'none' : 'flex';
+      if (!isVisible) {
+        searchInput.focus();
+      }
+    }
+  }
+
+  function closeSearchPanel() {
+    if (searchPanel) {
+      searchPanel.style.display = 'none';
+      searchInput.value = '';
+      replaceInput.value = '';
+      // Clear search highlight
+      markdownInput.value = markdownInput.value;
+    }
   }
 
   // Event Listeners
@@ -372,14 +763,33 @@ document.addEventListener('DOMContentLoaded', () => {
     editor.clear();
   });
 
+  // Export buttons
+  if (exportHtmlBtn) {
+    exportHtmlBtn.addEventListener('click', () => {
+      exportManager.exportToHtml();
+      saveToStorage();
+    });
+  }
+
+  if (exportMdBtn) {
+    exportMdBtn.addEventListener('click', () => {
+      exportManager.exportToMd();
+      saveToStorage();
+    });
+  }
+
   // Editor tool buttons
   boldBtn.addEventListener('click', () => {
-    editor.applyFormatting('bold');
+    const start = markdownInput.selectionStart;
+    const end = markdownInput.selectionEnd;
+    editor.applyFormatting('bold', start, end);
     saveToStorage();
   });
 
   italicBtn.addEventListener('click', () => {
-    editor.applyFormatting('italic');
+    const start = markdownInput.selectionStart;
+    const end = markdownInput.selectionEnd;
+    editor.applyFormatting('italic', start, end);
     saveToStorage();
   });
 
@@ -393,16 +803,88 @@ document.addEventListener('DOMContentLoaded', () => {
     saveToStorage();
   });
 
-  // Fullscreen toggle - Open in new tab
-  fullscreenBtn.addEventListener('click', () => {
-    // Save current content first
-    saveToStorage();
+  // Search button
+  if (searchBtn) {
+    searchBtn.addEventListener('click', toggleSearchPanel);
+  }
 
-    // Open fullscreen version in new tab
+  // Search panel controls
+  if (searchCloseBtn) {
+    searchCloseBtn.addEventListener('click', closeSearchPanel);
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      editor.findText(searchInput.value);
+    });
+  }
+
+  if (findNextBtn) {
+    findNextBtn.addEventListener('click', () => {
+      editor.findText(searchInput.value, false);
+    });
+  }
+
+  if (findPrevBtn) {
+    findPrevBtn.addEventListener('click', () => {
+      editor.findText(searchInput.value, true);
+    });
+  }
+
+  if (replaceBtn) {
+    replaceBtn.addEventListener('click', () => {
+      editor.replaceText(searchInput.value, replaceInput.value);
+    });
+  }
+
+  if (replaceAllBtn) {
+    replaceAllBtn.addEventListener('click', () => {
+      const count = editor.replaceAll(searchInput.value, replaceInput.value);
+      showToast(I18N.t('replacedCount').replace('{count}', count));
+      updatePreview();
+    });
+  }
+
+  // Theme button
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      themeManager.toggle();
+      saveToStorage();
+    });
+  }
+
+  // Preview Theme button
+  if (previewThemeBtn) {
+    previewThemeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      previewThemeManager.toggle();
+    });
+  }
+
+  // Theme dropdown selection
+  if (themeDropdown) {
+    themeDropdown.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const theme = btn.dataset.theme;
+        previewThemeManager.applyTheme(theme);
+        showToast(I18N.t('previewThemeChanged') + I18N.t('theme' + theme.charAt(0).toUpperCase() + theme.slice(1)));
+        saveToStorage();
+        previewThemeManager.hide();
+      });
+    });
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', () => {
+    previewThemeManager.hide();
+  });
+
+  // Fullscreen toggle
+  fullscreenBtn.addEventListener('click', () => {
+    saveToStorage();
     const fullscreenUrl = chrome.runtime.getURL('fullscreen.html');
     chrome.tabs.create({ url: fullscreenUrl });
-
-    // Close popup
     window.close();
   });
 
@@ -428,7 +910,11 @@ document.addEventListener('DOMContentLoaded', () => {
         case 's':
           e.preventDefault();
           saveToStorage();
-          showToast('已自动保存');
+          showToast(I18N.t('autoSaved'));
+          break;
+        case 'f':
+          e.preventDefault();
+          toggleSearchPanel();
           break;
       }
     }
@@ -440,8 +926,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (saved.markdown) {
       markdownInput.value = saved.markdown;
     } else {
-      markdownInput.value = '# 欢迎使用Markdown编辑器\n\n \`Create by : Ajar半开\` \n转载请保留来源\n\n在这里输入您的Markdown内容...\n\n## 功能\n\n- **粗体** 和 *斜体*\n- 添加 [链接](https://example.com)\n- 内联代码 `console.log(\"Hello\")`\n\n```javascript\nconst message = \"Hello, World!\";\nconsole.log(message);\n```\n\n> 这是一个引用块\n\n- 列表项1\n- 列表项2\n\n1. 有序列表项1\n2. 有序列表项2\n';
+      markdownInput.value = I18N.getWelcomeText();
     }
+
+    // Apply saved preview theme from preferences
+    if (saved.preferences && saved.preferences.previewTheme) {
+      previewThemeManager.applyTheme(saved.preferences.previewTheme);
+    }
+
     updatePreview();
     updateStats();
   })();
@@ -494,11 +986,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const newEditorWidth = this.startEditorWidth + deltaX;
         const newPreviewWidth = this.startPreviewWidth - deltaX;
 
-        // Calculate percentages
         const editorPercentage = (newEditorWidth / containerWidth) * 100;
         const previewPercentage = (newPreviewWidth / containerWidth) * 100;
 
-        // Apply minimum width constraints (20% and 30% minimum)
         const minEditorPercent = 20;
         const minPreviewPercent = 20;
 
@@ -520,7 +1010,6 @@ document.addEventListener('DOMContentLoaded', () => {
           this.resizer.classList.remove('dragging');
           document.body.classList.remove('resizing');
 
-          // Save the current split ratio
           const editorWidth = this.editorPanel.offsetWidth;
           const containerWidth = this.container.offsetWidth;
           const ratio = (editorWidth / containerWidth * 100).toFixed(2);
@@ -528,7 +1017,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Restore saved split ratio on load
       this.restoreSplitRatio();
     }
 
@@ -536,7 +1024,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const savedRatio = localStorage.getItem('markdown-editor-split-ratio');
       if (savedRatio) {
         const ratio = parseFloat(savedRatio);
-        const clampedRatio = Math.max(20, Math.min(80, ratio)); // Clamp between 20% and 80%
+        const clampedRatio = Math.max(20, Math.min(80, ratio));
         this.editorPanel.style.setProperty('width', clampedRatio + '%', 'important');
         this.previewPanel.style.setProperty('width', (100 - clampedRatio) + '%', 'important');
         this.editorPanel.style.setProperty('flex', 'none', 'important');
@@ -549,7 +1037,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Initialize resizer
   new Resizer();
 
   console.log('Markdown Editor initialized successfully');
