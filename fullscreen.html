@@ -1,66 +1,90 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Markdown Editor - 全屏模式</title>
+  <title data-i18n-title-key="fullscreenTitle">Markdown Editor - Fullscreen</title>
   <link rel="stylesheet" href="styles/fullscreen.css">
   <link rel="stylesheet" href="styles/drag-resize.css">
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Markdown Editor - 全屏模式</h1>
-      <div class="header-controls">
-        <button id="openInPopupBtn" title="在popup中打开">📤</button>
-        <button id="closeBtn" title="关闭">✕</button>
-      </div>
+      <h1 data-i18n="fullscreenTitle">Markdown Editor - Fullscreen</h1>
       <div class="toolbar">
-        <button id="formatBtn" title="格式化">📝</button>
-        <button id="copyHtmlBtn" title="复制HTML">📋</button>
-        <button id="copyMarkdownBtn" title="复制Markdown">📄</button>
-        <button id="clearBtn" title="清空">🗑️</button>
+        <button id="formatBtn" data-i18n-title="format">📝</button>
+        <button id="copyHtmlBtn" data-i18n-title="copyHTML">📋</button>
+        <button id="copyMarkdownBtn" data-i18n-title="copyMarkdown">📄</button>
+        <button id="exportHtmlBtn" data-i18n-title="exportHTML">💾</button>
+        <button id="exportMdBtn" data-i18n-title="exportMD">📁</button>
+        <button id="clearBtn" data-i18n-title="clear">🗑️</button>
       </div>
     </div>
 
     <div class="editor-container resizable-container">
       <div class="editor-panel">
         <div class="panel-header">
-          <span>Markdown 编辑器</span>
+          <span data-i18n="markdownEditor">Markdown Editor</span>
           <div class="editor-tools">
-            <button id="boldBtn" title="粗体 (Ctrl+B)">B</button>
-            <button id="italicBtn" title="斜体 (Ctrl+I)">I</button>
-            <button id="linkBtn" title="链接 (Ctrl+K)">🔗</button>
-            <button id="codeBtn" title="代码块">{ }</button>
+            <button id="boldBtn" data-i18n-title="bold">B</button>
+            <button id="italicBtn" data-i18n-title="italic">I</button>
+            <button id="linkBtn" data-i18n-title="link">🔗</button>
+            <button id="codeBtn" data-i18n-title="code">{ }</button>
+            <button id="searchBtn" data-i18n-title="search">🔍</button>
+            <button id="themeBtn" data-i18n-title="theme">🌙</button>
           </div>
         </div>
-        <textarea id="markdownInput" placeholder="在这里输入Markdown内容..."></textarea>
+        <textarea id="markdownInput" data-i18n-placeholder="inputPlaceholder" placeholder="Enter your Markdown content here..."></textarea>
+
+        <!-- Search Panel -->
+        <div id="searchPanel" class="search-panel" style="display: none;">
+          <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Search...">
+          <input type="text" id="replaceInput" data-i18n-placeholder="replacePlaceholder" placeholder="Replace...">
+          <div class="search-actions">
+            <button id="findPrevBtn">↑</button>
+            <button id="findNextBtn">↓</button>
+            <button id="replaceBtn" data-i18n="replace">Replace</button>
+            <button id="replaceAllBtn" data-i18n="replaceAll">Replace All</button>
+            <button id="searchCloseBtn" data-i18n="close">Close</button>
+          </div>
+        </div>
       </div>
 
       <div class="resizer"></div>
 
       <div class="preview-panel">
         <div class="panel-header">
-          <span>实时预览</span>
+          <span data-i18n="livePreview">Live Preview</span>
           <div class="preview-tools">
-            <span class="sync-indicator" id="syncIndicator">同步</span>
+            <div class="theme-selector">
+              <button id="previewThemeBtn" data-i18n-title="previewTheme">🎨</button>
+              <div id="themeDropdown" class="theme-dropdown">
+                <button data-theme="default" data-i18n="themeDefault">Default</button>
+                <button data-theme="github" data-i18n="themeGithub">GitHub</button>
+                <button data-theme="vuepress" data-i18n="themeVuepress">VuePress</button>
+                <button data-theme="minimal" data-i18n="themeMinimal">Minimal</button>
+                <button data-theme="technical" data-i18n="themeTechnical">Technical</button>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="markdownPreview" class="preview-content"></div>
+        <div id="markdownPreview" class="preview-content theme-default"></div>
       </div>
     </div>
 
     <div class="footer">
       <div class="stats">
-        <span id="wordCount">字数: 0</span>
-        <span id="charCount">字符: 0</span>
-        <span id="lastSaved">保存: 未保存</span>
+        <span id="wordCount">0 <span data-i18n="wordCount">Words</span></span>
+        <span id="charCount">0 <span data-i18n="charCount">Characters</span></span>
+        <span id="lastSaved" data-i18n="notSaved">Not saved</span>
       </div>
     </div>
   </div>
 
   <script src="lib/marked.min.js"></script>
   <script src="lib/highlight.min.js"></script>
+  <script src="lib/dompurify.min.js"></script>
+  <script src="scripts/i18n.js"></script>
   <script src="scripts/fullscreen.js"></script>
 </body>
 </html>

@@ -65,7 +65,38 @@ const I18N = {
 
       // Menu
       viewInPopup: 'View in popup window',
-      openInFullscreen: 'Open in fullscreen'
+      openInFullscreen: 'Open in fullscreen',
+
+      // Export
+      exportHTML: 'Export as HTML',
+      exportMD: 'Export as Markdown',
+      exportedHtml: 'HTML file exported',
+      exportedMd: 'Markdown file exported',
+
+      // Search
+      search: 'Search',
+      searchPlaceholder: 'Search...',
+      replacePlaceholder: 'Replace...',
+      replace: 'Replace',
+      replaceAll: 'Replace All',
+      replaceCount: '{count} replacements made',
+      notFound: 'Not found',
+      close: 'Close',
+
+      // Theme
+      theme: 'Toggle Theme',
+      themeChanged: 'Theme changed',
+      lightTheme: 'Light',
+      darkTheme: 'Dark',
+      previewTheme: 'Preview Theme',
+      previewThemeChanged: 'Preview theme changed to: ',
+
+      // Preview themes
+      themeDefault: 'Default',
+      themeGithub: 'GitHub',
+      themeVuepress: 'VuePress',
+      themeMinimal: 'Minimal',
+      themeTechnical: 'Technical'
     },
     zh: {
       // Extension info
@@ -125,7 +156,38 @@ const I18N = {
 
       // Menu
       viewInPopup: '在弹出窗口中查看',
-      openInFullscreen: '全屏打开'
+      openInFullscreen: '全屏打开',
+
+      // Export
+      exportHTML: '导出为HTML',
+      exportMD: '导出为Markdown',
+      exportedHtml: 'HTML文件已导出',
+      exportedMd: 'Markdown文件已导出',
+
+      // Search
+      search: '搜索',
+      searchPlaceholder: '搜索...',
+      replacePlaceholder: '替换...',
+      replace: '替换',
+      replaceAll: '全部替换',
+      replaceCount: '已完成 {count} 处替换',
+      notFound: '未找到',
+      close: '关闭',
+
+      // Theme
+      theme: '切换主题',
+      themeChanged: '主题已更改',
+      lightTheme: '浅色',
+      darkTheme: '深色',
+      previewTheme: '预览主题',
+      previewThemeChanged: '预览主题已更改为：',
+
+      // Preview themes
+      themeDefault: '默认',
+      themeGithub: 'GitHub风格',
+      themeVuepress: 'VuePress风格',
+      themeMinimal: '极简',
+      themeTechnical: '技术文档'
     },
     ja: {
       // Extension info
@@ -185,7 +247,38 @@ const I18N = {
 
       // Menu
       viewInPopup: 'ポップアップで表示',
-      openInFullscreen: 'フルスクリーンで開く'
+      openInFullscreen: 'フルスクリーンで開く',
+
+      // Export
+      exportHTML: 'HTMLとしてエクスポート',
+      exportMD: 'Markdownとしてエクスポート',
+      exportedHtml: 'HTMLファイルをエクスポートしました',
+      exportedMd: 'Markdownファイルをエクスポートしました',
+
+      // Search
+      search: '検索',
+      searchPlaceholder: '検索...',
+      replacePlaceholder: '置換...',
+      replace: '置換',
+      replaceAll: 'すべて置換',
+      replaceCount: '{count}件置換しました',
+      notFound: '見つかりません',
+      close: '閉じる',
+
+      // Theme
+      theme: 'テーマ切り替え',
+      themeChanged: 'テーマを変更しました',
+      lightTheme: 'ライト',
+      darkTheme: 'ダーク',
+      previewTheme: 'プレビューテーマ',
+      previewThemeChanged: 'プレビューテーマを変更しました：',
+
+      // Preview themes
+      themeDefault: 'デフォルト',
+      themeGithub: 'GitHub',
+      themeVuepress: 'VuePress',
+      themeMinimal: 'ミニマル',
+      themeTechnical: '技術文書'
     },
     es: {
       // Extension info
@@ -245,7 +338,38 @@ const I18N = {
 
       // Menu
       viewInPopup: 'Ver en ventana emergente',
-      openInFullscreen: 'Abrir en pantalla completa'
+      openInFullscreen: 'Abrir en pantalla completa',
+
+      // Export
+      exportHTML: 'Exportar como HTML',
+      exportMD: 'Exportar como Markdown',
+      exportedHtml: 'Archivo HTML exportado',
+      exportedMd: 'Archivo Markdown exportado',
+
+      // Search
+      search: 'Buscar',
+      searchPlaceholder: 'Buscar...',
+      replacePlaceholder: 'Reemplazar...',
+      replace: 'Reemplazar',
+      replaceAll: 'Reemplazar todo',
+      replaceCount: '{count} reemplazos realizados',
+      notFound: 'No encontrado',
+      close: 'Cerrar',
+
+      // Theme
+      theme: 'Cambiar tema',
+      themeChanged: 'Tema cambiado',
+      lightTheme: 'Claro',
+      darkTheme: 'Oscuro',
+      previewTheme: 'Tema de Vista Previa',
+      previewThemeChanged: 'Tema de vista previa cambiado a: ',
+
+      // Preview themes
+      themeDefault: 'Predeterminado',
+      themeGithub: 'GitHub',
+      themeVuepress: 'VuePress',
+      themeMinimal: 'Minimalista',
+      themeTechnical: 'Documentación Técnica'
     }
   },
 

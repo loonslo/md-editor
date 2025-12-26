@@ -15,6 +15,8 @@
         <button id="formatBtn" data-i18n-title="format">📝</button>
         <button id="copyHtmlBtn" data-i18n-title="copyHTML">📋</button>
         <button id="copyMarkdownBtn" data-i18n-title="copyMarkdown">📄</button>
+        <button id="exportHtmlBtn" data-i18n-title="exportHTML">💾</button>
+        <button id="exportMdBtn" data-i18n-title="exportMD">📁</button>
         <button id="clearBtn" data-i18n-title="clear">🗑️</button>
       </div>
     </div>
@@ -28,9 +30,24 @@
             <button id="italicBtn" data-i18n-title="italic">I</button>
             <button id="linkBtn" data-i18n-title="link">🔗</button>
             <button id="codeBtn" data-i18n-title="code">{ }</button>
+            <button id="searchBtn" data-i18n-title="search">🔍</button>
+            <button id="themeBtn" data-i18n-title="theme">🌙</button>
           </div>
         </div>
         <textarea id="markdownInput" data-i18n-placeholder="inputPlaceholder" placeholder="Enter your Markdown content here..."></textarea>
+
+        <!-- Search Panel -->
+        <div id="searchPanel" class="search-panel" style="display: none;">
+          <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Search...">
+          <input type="text" id="replaceInput" data-i18n-placeholder="replacePlaceholder" placeholder="Replace...">
+          <div class="search-actions">
+            <button id="findPrevBtn">↑</button>
+            <button id="findNextBtn">↓</button>
+            <button id="replaceBtn" data-i18n="replace">Replace</button>
+            <button id="replaceAllBtn" data-i18n="replaceAll">Replace All</button>
+            <button id="searchCloseBtn" data-i18n="close">Close</button>
+          </div>
+        </div>
       </div>
 
       <div class="resizer"></div>
@@ -39,10 +56,20 @@
         <div class="panel-header">
           <span data-i18n="livePreview">Live Preview</span>
           <div class="preview-tools">
+            <div class="theme-selector">
+              <button id="previewThemeBtn" data-i18n-title="previewTheme">🎨</button>
+              <div id="themeDropdown" class="theme-dropdown">
+                <button data-theme="default" data-i18n="themeDefault">Default</button>
+                <button data-theme="github" data-i18n="themeGithub">GitHub</button>
+                <button data-theme="vuepress" data-i18n="themeVuepress">VuePress</button>
+                <button data-theme="minimal" data-i18n="themeMinimal">Minimal</button>
+                <button data-theme="technical" data-i18n="themeTechnical">Technical</button>
+              </div>
+            </div>
             <button id="fullscreenBtn" data-i18n-title="fullscreen">⛶</button>
           </div>
         </div>
-        <div id="markdownPreview" class="preview-content"></div>
+        <div id="markdownPreview" class="preview-content theme-default"></div>
       </div>
     </div>
 
@@ -56,6 +83,7 @@
 
   <script src="lib/marked.min.js"></script>
   <script src="lib/highlight.min.js"></script>
+  <script src="lib/dompurify.min.js"></script>
   <script src="scripts/i18n.js"></script>
   <script src="scripts/popup.js"></script>
 </body>
