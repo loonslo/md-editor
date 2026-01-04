@@ -1,11 +1,11 @@
 {
   "extensionName": {
-    "message": "Markdown Editor & Formatter"
+    "message": "Markdown Editor - Live Preview & Format"
   },
   "extensionDescription": {
-    "message": "A powerful Markdown editor with real-time preview, formatting, and quick copy features"
+    "message": "Edit Markdown with real-time preview, formatting tools, and quick copy. Auto-save locally, dark theme, fullscreen mode."
   },
   "openNewTab": {
-    "message": "Markdown Editor - Click to open in new tab"
+    "message": "Open Markdown Editor in new tab"
   }
 }

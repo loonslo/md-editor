@@ -1,11 +1,11 @@
 {
   "extensionName": {
-    "message": "Markdown エディター & フォーマッター"
+    "message": "Markdown エディター - ライブプレビュー"
   },
   "extensionDescription": {
-    "message": "リアルタイムプレビュー、フォーマット、クイックコピー機能を備えた強力なMarkdownエディター"
+    "message": "Markdown編集、リアルタイムプレビュー、フォーマット、クイックコピー対応。ローカル自動保存、ダークテーマ、全画面モード。"
   },
   "openNewTab": {
-    "message": "Markdown エディター - クリックして新しいタブで開く"
+    "message": "新しいタブで Markdown エディターを開く"
   }
 }
