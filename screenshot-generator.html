@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Editor - Screenshot Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+
+    .instructions {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .instructions h2 {
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .instructions ol {
+      padding-left: 24px;
+      color: #555;
+      line-height: 2;
+    }
+
+    .preview-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
+    }
+
+    .preview-box {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .preview-header {
+      background: #1a1a2e;
+      color: white;
+      padding: 12px 20px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .preview-header .icon {
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 4px;
+    }
+
+    .screenshot-wrapper {
+      position: relative;
+    }
+
+    /* Main Editor Screenshot */
+    #mainEditor {
+      width: 1280px;
+      height: 800px;
+      background: #1e1e2e;
+      transform-origin: top left;
+      transform: scale(0.5);
+      margin-bottom: -400px;
+    }
+
+    /* Compact Screenshot */
+    #compactPreview {
+      width: 640px;
+      height: 400px;
+      background: #1e1e2e;
+      transform-origin: top left;
+      transform: scale(0.7);
+      margin-bottom: -280px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 16px 32px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #667eea;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #667eea;
+    }
+
+    .size-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .tips {
+      background: #f0f4ff;
+      border-left: 4px solid #667eea;
+      padding: 16px 20px;
+      margin-top: 20px;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .tips h3 {
+      color: #667eea;
+      margin-bottom: 8px;
+    }
+
+    .tips ul {
+      padding-left: 20px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📸 Chrome Web Store Screenshot Generator</h1>
+
+    <div class="instructions">
+      <h2>📋 How to Create Screenshots</h2>
+      <ol>
+        <li><strong>Option A - Use this tool:</strong> Click "Open Fullscreen Editor" below, then use browser's screenshot tool</li>
+        <li><strong>Option B - Manual:</strong> Load the extension, open fullscreen mode, and capture screenshots manually</li>
+        <li>Save as PNG format with the required dimensions</li>
+        <li>Upload to Chrome Developer Dashboard</li>
+      </ol>
+
+      <div class="tips">
+        <h3>💡 Requirements</h3>
+        <ul>
+          <li><strong>Small tile:</strong> 640 x 400 pixels (shown in store listing)</li>
+          <li><strong>Large tile:</strong> 1280 x 800 pixels (shown when expanded)</li>
+          <li>Minimum 1 screenshot required, up to 10 allowed</li>
+          <li>Use PNG or JPG format</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="preview-section">
+      <div class="preview-box">
+        <div class="preview-header">
+          <div class="icon"></div>
+          Main Editor View (1280 x 800)
+        </div>
+        <div class="screenshot-wrapper">
+          <iframe id="mainEditor" src="fullscreen.html" frameborder="0"></iframe>
+          <div class="size-badge">1280 x 800</div>
+        </div>
+      </div>
+
+      <div class="preview-box">
+        <div class="preview-header">
+          <div class="icon"></div>
+          Store Preview (640 x 400)
+        </div>
+        <div class="screenshot-wrapper">
+          <iframe id="compactPreview" src="fullscreen.html" frameborder="0"></iframe>
+          <div class="size-badge">640 x 400</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a href="fullscreen.html" target="_blank" class="btn btn-primary">
+        🚀 Open Fullscreen Editor
+      </a>
+      <button class="btn btn-secondary" onclick="copyDimensions()">
+        📐 Copy Dimensions
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function copyDimensions() {
+      const text = `Screenshot Requirements:
+- Small tile: 640 x 400 pixels
+- Large tile: 1280 x 800 pixels
+- Format: PNG or JPG
+- Minimum: 1 screenshot
+- Maximum: 10 screenshots`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Dimensions copied to clipboard!');
+      });
+    }
+
+    // Add sample markdown content for better preview
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const iframe = document.getElementById('mainEditor');
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          const textarea = doc.getElementById('markdownInput');
+          if (textarea && !textarea.value) {
+            textarea.value = `# Welcome to Markdown Editor
+
+## Features
+
+- **Real-time preview** - See your changes instantly
+- *Formatting tools* - Bold, italic, links, and more
+- \`Code blocks\` with syntax highlighting
+- Quick copy as HTML or Markdown
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello, World!");
+}
+\`\`\`
+
+> "The best Markdown editor for Chrome!"
+
+## Lists
+
+1. First item
+2. Second item
+3. Third item
+
+- Unordered item
+- Another item
+
+---
+
+*Last updated: January 2025*`;
+          }
+        } catch (e) {
+          console.log('Cannot access iframe content');
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
