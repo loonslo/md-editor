@@ -1,5 +1,10 @@
 # Markdown Chrome Extension
 
+### chrome插件市场已上架。欢迎搜索下载使用 Markdown Editor - Live Preview & Format
+
+<img width="2560" height="860" alt="image" src="https://github.com/user-attachments/assets/2a6659d8-2bc2-4f4c-accd-6512c8763fc4" />
+
+
 ## 🌍 多语言支持 (Internationalization)
 
 本扩展现在支持多种语言，为全球用户提供本地化体验！
