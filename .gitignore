@@ -1,0 +1,25 @@
+# Environment
+.env
+
+# Logs
+*.log
+
+# Browser Extension
+node_modules/
+dist/
+build/
+*.crx
+*.xpi
+*.zip
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup (should already be gone but just in case)
+*.bak
