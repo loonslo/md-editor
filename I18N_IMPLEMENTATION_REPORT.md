@@ -23,7 +23,7 @@
 - Español (es)
 
 ### 2. HTML 模板国际化
-**文件**：`popup.html`, `fullscreen.html`
+**文件**：`fullscreen.html`
 
 **改进**：
 - ✅ 所有硬编码文本已替换为 `data-i18n` 属性
@@ -39,7 +39,7 @@
 ```
 
 ### 3. JavaScript 逻辑国际化
-**文件**：`scripts/popup.js`
+**文件**：`scripts/fullscreen.js`
 
 **改进**：
 - ✅ 所有用户提示和消息使用 `I18N.t()` 函数

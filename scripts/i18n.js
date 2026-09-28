@@ -26,10 +26,7 @@ const I18N = {
       link: 'Link',
       code: 'Code',
       fullscreen: 'Fullscreen',
-
-      // Editor tools
-      editorTools: 'Editor Tools',
-      previewTools: 'Preview Tools',
+      fullscreenTitle: 'Markdown Editor - Fullscreen',
 
       // Placeholders
       inputPlaceholder: 'Enter your Markdown content here...',
@@ -63,10 +60,6 @@ const I18N = {
       // Action
       openNewTab: 'Markdown Editor - Click to open in new tab',
 
-      // Menu
-      viewInPopup: 'View in popup window',
-      openInFullscreen: 'Open in fullscreen',
-
       // Export
       exportHTML: 'Export as HTML',
       exportMD: 'Export as Markdown',
@@ -80,7 +73,6 @@ const I18N = {
       replace: 'Replace',
       replaceAll: 'Replace All',
       replaceCount: '{count} replacements made',
-      notFound: 'Not found',
       close: 'Close',
 
       // Theme
@@ -117,10 +109,7 @@ const I18N = {
       link: '链接',
       code: '代码',
       fullscreen: '全屏预览',
-
-      // Editor tools
-      editorTools: '编辑器工具',
-      previewTools: '预览工具',
+      fullscreenTitle: 'Markdown 编辑器 - 全屏模式',
 
       // Placeholders
       inputPlaceholder: '在这里输入Markdown内容...',
@@ -154,10 +143,6 @@ const I18N = {
       // Action
       openNewTab: 'Markdown Editor - 点击在新标签页中打开',
 
-      // Menu
-      viewInPopup: '在弹出窗口中查看',
-      openInFullscreen: '全屏打开',
-
       // Export
       exportHTML: '导出为HTML',
       exportMD: '导出为Markdown',
@@ -171,7 +156,6 @@ const I18N = {
       replace: '替换',
       replaceAll: '全部替换',
       replaceCount: '已完成 {count} 处替换',
-      notFound: '未找到',
       close: '关闭',
 
       // Theme
@@ -208,10 +192,7 @@ const I18N = {
       link: 'リンク',
       code: 'コード',
       fullscreen: 'フルスクリーン',
-
-      // Editor tools
-      editorTools: 'エディターツール',
-      previewTools: 'プレビューツール',
+      fullscreenTitle: 'Markdown エディター - フルスクリーン',
 
       // Placeholders
       inputPlaceholder: 'Markdown内容を入力してください...',
@@ -245,10 +226,6 @@ const I18N = {
       // Action
       openNewTab: 'Markdown エディター - クリックして新しいタブで開く',
 
-      // Menu
-      viewInPopup: 'ポップアップで表示',
-      openInFullscreen: 'フルスクリーンで開く',
-
       // Export
       exportHTML: 'HTMLとしてエクスポート',
       exportMD: 'Markdownとしてエクスポート',
@@ -262,7 +239,6 @@ const I18N = {
       replace: '置換',
       replaceAll: 'すべて置換',
       replaceCount: '{count}件置換しました',
-      notFound: '見つかりません',
       close: '閉じる',
 
       // Theme
@@ -299,10 +275,7 @@ const I18N = {
       link: 'Enlace',
       code: 'Código',
       fullscreen: 'Pantalla Completa',
-
-      // Editor tools
-      editorTools: 'Herramientas del Editor',
-      previewTools: 'Herramientas de Vista Previa',
+      fullscreenTitle: 'Editor Markdown - Pantalla Completa',
 
       // Placeholders
       inputPlaceholder: 'Ingresa tu contenido Markdown aquí...',
@@ -336,10 +309,6 @@ const I18N = {
       // Action
       openNewTab: 'Editor Markdown - Clic para abrir en nueva pestaña',
 
-      // Menu
-      viewInPopup: 'Ver en ventana emergente',
-      openInFullscreen: 'Abrir en pantalla completa',
-
       // Export
       exportHTML: 'Exportar como HTML',
       exportMD: 'Exportar como Markdown',
@@ -353,7 +322,6 @@ const I18N = {
       replace: 'Reemplazar',
       replaceAll: 'Reemplazar todo',
       replaceCount: '{count} reemplazos realizados',
-      notFound: 'No encontrado',
       close: 'Cerrar',
 
       // Theme

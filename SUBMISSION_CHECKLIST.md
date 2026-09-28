@@ -6,8 +6,7 @@
 - [x] `manifest.json` - Valid Manifest V3 format
 - [x] `background.js` - Service worker properly configured
 - [x] Icons: 16x16, 48x48, 128x128 PNG files
-- [x] `popup.html` - Main UI (if applicable)
-- [x] `fullscreen.html` - Fullscreen editor mode
+- [x] `fullscreen.html` - Fullscreen editor mode (sole UI entry point)
 
 ### 2. Permissions (Review Completed)
 - [x] `storage` - Local data storage only
@@ -145,9 +144,7 @@ Markdown 编辑器 - 实时预览与格式化
 ```bash
 # Create a zip file containing:
 zip -r md-editor.zip manifest.json background.js \
-  popup.html fullscreen.html icons/ lib/ scripts/ styles/ \
-  _locales/ styles/popup.css styles/fullscreen.css \
-  styles/drag-resize.css
+  fullscreen.html icons/ lib/ scripts/ styles/ _locales/
 ```
 
 ### 2. Upload to Chrome Web Store

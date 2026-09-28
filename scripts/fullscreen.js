@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
           }
         } catch (error) {
-          this.element.innerHTML = '<p style="color: #e74c3c;">' + I18N.t('parseError') + ': ' + error.message + '</p>';
+          this.element.innerHTML = '<p class="preview-error">' + I18N.t('parseError') + ': ' + error.message + '</p>';
         }
       }, 100); // Reduced delay for faster response
     }
@@ -535,7 +535,10 @@ ${html}
 
     updateButtonIcon() {
       if (themeBtn) {
-        themeBtn.textContent = this.currentTheme === 'dark' ? '☀️' : '🌙';
+        const use = themeBtn.querySelector('use');
+        if (use) {
+          use.setAttribute('href', 'icons/toolbar-sprite.svg#icon-' + (this.currentTheme === 'dark' ? 'sun' : 'moon'));
+        }
       }
     }
   }
@@ -579,12 +582,18 @@ ${html}
     toggle() {
       if (themeDropdown) {
         themeDropdown.classList.toggle('show');
+        if (previewThemeBtn) {
+          previewThemeBtn.classList.toggle('is-open', themeDropdown.classList.contains('show'));
+        }
       }
     }
 
     hide() {
       if (themeDropdown) {
         themeDropdown.classList.remove('show');
+      }
+      if (previewThemeBtn) {
+        previewThemeBtn.classList.remove('is-open');
       }
     }
   }
@@ -673,7 +682,7 @@ ${html}
     toast.className = 'toast';
     toast.textContent = message;
     if (type === 'error') {
-      toast.style.background = '#e74c3c';
+      toast.classList.add('toast--error');
     }
     document.body.appendChild(toast);
 
@@ -934,13 +943,11 @@ ${html}
       this.isResizing = false;
       this.startX = 0;
       this.startEditorWidth = 0;
-      this.startPreviewWidth = 0;
 
       this.resizer.addEventListener('mousedown', (e) => {
         this.isResizing = true;
         this.startX = e.clientX;
         this.startEditorWidth = this.editorPanel.offsetWidth;
-        this.startPreviewWidth = this.previewPanel.offsetWidth;
 
         this.resizer.classList.add('dragging');
         document.body.classList.add('resizing');
@@ -955,23 +962,13 @@ ${html}
         const deltaX = e.clientX - this.startX;
         const containerWidth = this.container.offsetWidth;
         const newEditorWidth = this.startEditorWidth + deltaX;
-        const newPreviewWidth = this.startPreviewWidth - deltaX;
-
         const editorPercentage = (newEditorWidth / containerWidth) * 100;
-        const previewPercentage = (newPreviewWidth / containerWidth) * 100;
 
         const minEditorPercent = 20;
-        const minPreviewPercent = 20;
+        const maxEditorPercent = 80;
 
-        if (editorPercentage >= minEditorPercent && previewPercentage >= minPreviewPercent) {
-          this.editorPanel.style.setProperty('width', editorPercentage + '%', 'important');
-          this.previewPanel.style.setProperty('width', previewPercentage + '%', 'important');
-          this.editorPanel.style.setProperty('flex', 'none', 'important');
-          this.previewPanel.style.setProperty('flex', 'none', 'important');
-          this.editorPanel.style.setProperty('flex-grow', '0', 'important');
-          this.previewPanel.style.setProperty('flex-grow', '0', 'important');
-          this.editorPanel.style.setProperty('flex-shrink', '0', 'important');
-          this.previewPanel.style.setProperty('flex-shrink', '0', 'important');
+        if (editorPercentage >= minEditorPercent && editorPercentage <= maxEditorPercent) {
+          this.container.style.setProperty('--split-ratio', editorPercentage + '%');
         }
       });
 
@@ -996,14 +993,7 @@ ${html}
       if (savedRatio) {
         const ratio = parseFloat(savedRatio);
         const clampedRatio = Math.max(20, Math.min(80, ratio));
-        this.editorPanel.style.setProperty('width', clampedRatio + '%', 'important');
-        this.previewPanel.style.setProperty('width', (100 - clampedRatio) + '%', 'important');
-        this.editorPanel.style.setProperty('flex', 'none', 'important');
-        this.previewPanel.style.setProperty('flex', 'none', 'important');
-        this.editorPanel.style.setProperty('flex-grow', '0', 'important');
-        this.previewPanel.style.setProperty('flex-grow', '0', 'important');
-        this.editorPanel.style.setProperty('flex-shrink', '0', 'important');
-        this.previewPanel.style.setProperty('flex-shrink', '0', 'important');
+        this.container.style.setProperty('--split-ratio', clampedRatio + '%');
       }
     }
   }

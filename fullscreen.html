@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n-title-key="fullscreenTitle">Markdown Editor - Fullscreen</title>
+  <link rel="stylesheet" href="styles/tokens.css">
   <link rel="stylesheet" href="styles/fullscreen.css">
+  <link rel="stylesheet" href="styles/preview-themes.css">
   <link rel="stylesheet" href="styles/drag-resize.css">
 </head>
 <body>
@@ -12,26 +14,28 @@
     <div class="header">
       <h1 data-i18n="fullscreenTitle">Markdown Editor - Fullscreen</h1>
       <div class="toolbar">
-        <button id="formatBtn" data-i18n-title="format">📝</button>
-        <button id="copyHtmlBtn" data-i18n-title="copyHTML">📋</button>
-        <button id="copyMarkdownBtn" data-i18n-title="copyMarkdown">📄</button>
-        <button id="exportHtmlBtn" data-i18n-title="exportHTML">💾</button>
-        <button id="exportMdBtn" data-i18n-title="exportMD">📁</button>
-        <button id="clearBtn" data-i18n-title="clear">🗑️</button>
+        <button id="formatBtn" class="toolbar-btn" data-i18n-title="format"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-format"></use></svg></button>
+        <button id="copyHtmlBtn" class="toolbar-btn" data-i18n-title="copyHTML"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-code"></use></svg></button>
+        <button id="copyMarkdownBtn" class="toolbar-btn" data-i18n-title="copyMarkdown"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-clipboard"></use></svg></button>
+        <span class="toolbar-divider"></span>
+        <button id="exportHtmlBtn" class="toolbar-btn" data-i18n-title="exportHTML"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-browser"></use></svg></button>
+        <button id="exportMdBtn" class="toolbar-btn" data-i18n-title="exportMD"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-file-text"></use></svg></button>
+        <span class="toolbar-divider"></span>
+        <button id="clearBtn" class="toolbar-btn toolbar-btn--danger" data-i18n-title="clear"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-trash"></use></svg></button>
       </div>
     </div>
 
-    <div class="editor-container resizable-container">
+    <div class="editor-container">
       <div class="editor-panel">
         <div class="panel-header">
           <span data-i18n="markdownEditor">Markdown Editor</span>
           <div class="editor-tools">
             <button id="boldBtn" data-i18n-title="bold">B</button>
             <button id="italicBtn" data-i18n-title="italic">I</button>
-            <button id="linkBtn" data-i18n-title="link">🔗</button>
+            <button id="linkBtn" data-i18n-title="link"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-link"></use></svg></button>
             <button id="codeBtn" data-i18n-title="code">{ }</button>
-            <button id="searchBtn" data-i18n-title="search">🔍</button>
-            <button id="themeBtn" data-i18n-title="theme">🌙</button>
+            <button id="searchBtn" data-i18n-title="search"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-search"></use></svg></button>
+            <button id="themeBtn" data-i18n-title="theme"><svg class="icon"><use href="icons/toolbar-sprite.svg#icon-moon"></use></svg></button>
           </div>
         </div>
         <textarea id="markdownInput" data-i18n-placeholder="inputPlaceholder" placeholder="Enter your Markdown content here..."></textarea>
@@ -57,7 +61,10 @@
           <span data-i18n="livePreview">Live Preview</span>
           <div class="preview-tools">
             <div class="theme-selector">
-              <button id="previewThemeBtn" data-i18n-title="previewTheme">🎨</button>
+              <button id="previewThemeBtn" data-i18n-title="previewTheme">
+                <svg class="icon"><use href="icons/toolbar-sprite.svg#icon-layout"></use></svg>
+                <svg class="icon chevron-icon"><use href="icons/toolbar-sprite.svg#icon-chevron-down"></use></svg>
+              </button>
               <div id="themeDropdown" class="theme-dropdown">
                 <button data-theme="default" data-i18n="themeDefault">Default</button>
                 <button data-theme="github" data-i18n="themeGithub">GitHub</button>
