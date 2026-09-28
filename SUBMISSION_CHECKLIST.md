@@ -21,8 +21,8 @@
 
 ### 4. Privacy Compliance
 - [x] `PRIVACY_POLICY.md` created
-- [ ] Privacy policy deployed to URL
-- [ ] Privacy policy URL ready for dashboard
+- [x] Privacy policy available at https://github.com/loonslo/md-editor/blob/main/privacy-policy.html
+- [x] Privacy policy URL ready for dashboard
 
 ### 5. Localization
 - [x] English (default)
