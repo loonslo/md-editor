@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "default_locale": "en",
   "description": "__MSG_extensionDescription__",
   "permissions": [
@@ -17,15 +17,9 @@
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
-    "128": "icons/icon128.png",
-    "256": "icons/icon.svg",
-    "512": "icons/icon.svg"
+    "128": "icons/icon128.png"
   },
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
-  },
-  "web_accessible_resources": [{
-    "resources": ["lib/marked.min.js", "lib/dompurify.min.js", "fullscreen.html", "fullscreen.js", "styles/fullscreen.css", "lib/highlight.min.js", "scripts/i18n.js"],
-    "matches": ["<all_urls>"]
-  }]
+  }
 }

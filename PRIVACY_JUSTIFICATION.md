@@ -62,22 +62,11 @@ The clipboardWrite permission is used ONLY when the user explicitly clicks a "Co
 
 ---
 
-### 3. Host Patterns Justification
+### 3. Data Usage Disclosure
 
-#### web_accessible_resources with <all_urls>
-Google may ask about this. Use:
-
-**Copy this:**
-```
-The <all_urls> pattern in web_accessible_resources is required because fullscreen.html needs to be loaded in a new tab. This is a standard pattern for extensions that open their own pages in tabs. No external websites can access these resources.
-```
-
----
-
-### 4. Data Usage Disclosure
-
-#### Does your extension collect any user data?
-- [x] **No**, this extension does not collect any user data
+#### What user data does your extension handle?
+- Markdown text entered by the user, plus language, theme, and editor-layout preferences
+- Processing and storage happen locally on the user's device; the extension does not transmit this data to the developer or third parties
 
 #### Is any user data shared with third parties?
 - [x] **No**, user data is not shared with third parties
@@ -86,6 +75,12 @@ The <all_urls> pattern in web_accessible_resources is required because fullscree
 - [x] **User's device only**
 
 ---
+
+### 4. Privacy Policy URL
+
+```text
+https://github.com/loonslo/md-editor/blob/main/privacy-policy.html
+```
 
 ### 5. Certify Compliance
 
@@ -113,7 +108,6 @@ Before Publishing:
 - [ ] Single purpose: `Edit Markdown text in the browser with live preview`
 - [ ] storage justification filled
 - [ ] clipboardWrite justification filled
-- [ ] Host pattern justification filled (if asked)
 - [ ] Data usage certified
 - [ ] At least 1 screenshot uploaded
 - [ ] Extension re-packaged with updated files
@@ -131,5 +125,5 @@ Before Publishing:
 
 ---
 
-**Document Version:** 2.0
-**Last Updated:** January 2025
+**Document Version:** 2.1
+**Last Updated:** September 2026

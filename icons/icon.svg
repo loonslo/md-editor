@@ -1,5 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <rect width="128" height="128" rx="20" fill="#3498db"/>
-  <text x="64" y="70" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">MD</text>
-  <rect x="20" y="90" width="88" height="4" fill="white" opacity="0.3"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="15" fill="#2563eb"/>
+  <path d="M18 7h20l11 11v39H18z" fill="#fff"/>
+  <path d="M38 7v11h11" fill="#dbeafe" stroke="#93c5fd" stroke-linejoin="round"/>
+  <g fill="none" stroke="#1d4ed8" stroke-linecap="round" stroke-width="4">
+    <path d="M28 25v13M39 25l-3 13M25 29h17M24 35h17"/>
+  </g>
+  <g fill="none" stroke="#a5b4fc" stroke-linecap="round" stroke-width="2.5">
+    <path d="M27 45h14M27 50h9"/>
+  </g>
 </svg>
