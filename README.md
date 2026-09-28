@@ -116,25 +116,27 @@ n**v1.1.5 - 🌍 添加完整国际化 (i18n) 支持**
 
 ```
 .
-├── manifest.json          # 扩展配置文件
-├── background.js          # 后台服务脚本（处理点击事件）
-├── popup.html             # 主界面HTML（popup模式）
-├── fullscreen.html        # 全屏模式HTML
-├── README.md              # 项目文档
-├── INSTALL.md             # 安装指南
-├── FULLSCREEN_MODE.md     # 全屏模式使用指南
+├── manifest.json           # 扩展配置文件
+├── background.js           # 后台服务脚本（处理点击事件）
+├── fullscreen.html         # 全屏模式HTML（唯一入口）
+├── README.md               # 项目文档
 ├── styles/
-│   ├── popup.css          # popup样式
-│   └── fullscreen.css     # 全屏模式样式
+│   ├── tokens.css          # 设计token（颜色/间距/圆角/字号，浅色+深色）
+│   ├── fullscreen.css      # 全屏模式样式
+│   ├── preview-themes.css  # 预览区5套主题样式
+│   └── drag-resize.css     # 面板拖拽调整宽度
 ├── scripts/
-│   ├── popup.js           # popup脚本
-│   └── fullscreen.js      # 全屏模式脚本
+│   ├── i18n.js             # 多语言支持
+│   └── fullscreen.js       # 全屏模式脚本
 ├── lib/
-│   ├── marked.min.js      # Markdown解析库
-│   └── highlight.min.js   # 语法高亮库
+│   ├── marked.min.js       # Markdown解析库
+│   ├── highlight.min.js    # 语法高亮库
+│   └── dompurify.min.js    # HTML消毒库
+├── _locales/                # Chrome i18n消息包（en/zh_CN/ja/es）
 └── icons/
-    ├── README.txt         # 图标说明
-    ├── icon.svg           # SVG图标
+    ├── README.txt          # 图标说明
+    ├── icon.svg            # SVG图标
+    ├── toolbar-sprite.svg  # 工具栏图标sprite
     └── generate-icons.html # 图标生成器
 ```
 

@@ -1,111 +1,38 @@
-/* 拖拽调整面板宽度样式 */
-.resizable-container {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
+/* Draggable split between the editor and preview panels.
+   .editor-container sets --split-ratio (a CSS custom property, updated by
+   the Resizer class in scripts/fullscreen.js); editor-panel consumes it
+   as its flex-basis and preview-panel fills whatever remains. No
+   !important is needed because this is the only rule that sets `flex`
+   for these two elements. */
 
-.resizable-container {
-  display: flex !important;
-}
-
-.resizable-container .editor-panel {
-  width: 50% !important;
+.editor-panel {
+  flex: 0 0 clamp(20%, var(--split-ratio, 50%), 80%);
   min-width: 200px;
-  max-width: 80%;
-  overflow: hidden;
-  flex: none !important;
-  flex-grow: 0 !important;
-  flex-shrink: 0 !important;
-  display: block !important;
 }
 
-.resizable-container .preview-panel {
-  width: 50% !important;
+.preview-panel {
+  flex: 1 1 auto;
   min-width: 200px;
-  max-width: 80%;
-  overflow: hidden;
-  flex: none !important;
-  flex-grow: 0 !important;
-  flex-shrink: 0 !important;
-  display: block !important;
-}
-
-/* 确保textarea和预览内容占满整个面板 */
-.resizable-container .editor-panel {
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-.resizable-container .editor-panel textarea,
-.resizable-container .editor-panel #markdownInput {
-  width: 100% !important;
-  flex: 1 !important;
-  min-height: 0 !important;
-  box-sizing: border-box;
-  resize: none;
-}
-
-.resizable-container .preview-panel {
-  display: flex !important;
-  flex-direction: column !important;
-  height: 100% !important;
-  max-height: 100% !important;
-  position: relative;
-}
-
-.resizable-container .preview-panel #markdownPreview,
-.resizable-container .preview-panel .preview-content {
-  width: 100% !important;
-  flex: 1 !important;
-  min-height: 0 !important;
-  max-height: 100% !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  box-sizing: border-box;
-  position: relative;
-  /* 增强滚动条可见性 */
-  scrollbar-width: thin;
-  scrollbar-color: #888 #f1f1f1;
-}
-
-/* 确保预览内容本身也有滚动 */
-.resizable-container .preview-panel #markdownPreview > *,
-.resizable-container .preview-panel .preview-content > * {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* 强制确保预览内容不会溢出 */
-.resizable-container .preview-panel > #markdownPreview,
-.resizable-container .preview-panel > .preview-content {
-  display: block !important;
-  align-self: stretch !important;
 }
 
 .resizer {
   width: 8px;
-  background: linear-gradient(to right, #e0e0e0, #d0d0d0);
+  background: linear-gradient(to right, var(--color-border), var(--color-border-strong));
   cursor: col-resize;
   position: relative;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
   flex-shrink: 0;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  border-left: 1px solid var(--color-border-strong);
+  border-right: 1px solid var(--color-border-strong);
 }
 
-.resizer:hover {
-  background: linear-gradient(to right, #4CAF50, #45a049);
-  width: 10px;
-}
-
+.resizer:hover,
 .resizer.dragging {
-  background: linear-gradient(to right, #4CAF50, #45a049);
+  background: linear-gradient(to right, var(--color-brand), var(--color-brand-hover));
   width: 10px;
 }
 
-/* 添加三条小线指示器 */
+/* Three small dots indicator */
 .resizer::after {
   content: '⋮ ⋮ ⋮';
   position: absolute;
@@ -113,10 +40,10 @@
   top: 50%;
   transform: translate(-50%, -50%) rotate(90deg);
   font-size: 12px;
-  color: #999;
+  color: var(--color-text-placeholder);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity var(--transition-base);
   letter-spacing: 2px;
 }
 
@@ -125,7 +52,7 @@
   opacity: 0.6;
 }
 
-/* 拖拽时显示虚线 */
+/* Dashed guide line while dragging */
 .resizer::before {
   content: '';
   position: absolute;
@@ -135,14 +62,14 @@
   width: 2px;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.15),
-    rgba(0, 0, 0, 0.15) 4px,
+    var(--color-resizer-guide),
+    var(--color-resizer-guide) 4px,
     transparent 4px,
     transparent 8px
   );
   transform: translateX(-50%);
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity var(--transition-base);
 }
 
 .resizer:hover::before,
@@ -150,53 +77,49 @@
   opacity: 1;
 }
 
-/* 拖拽时禁用文本选择 */
+/* Disable text selection while dragging */
 body.resizing {
   user-select: none;
   cursor: col-resize;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 700px) {
   .resizer {
     width: 4px;
   }
 
-  .resizable-container .editor-panel,
-  .resizable-container .preview-panel {
-    min-width: 150px !important;
-    flex: none !important;
-    flex-grow: 0 !important;
-    flex-shrink: 0 !important;
+  .editor-panel,
+  .preview-panel {
+    min-width: 150px;
   }
 }
 
-/* 预览区域滚动条增强样式 */
-.resizable-container .preview-panel #markdownPreview::-webkit-scrollbar,
-.resizable-container .preview-panel .preview-content::-webkit-scrollbar {
+/* Preview scrollbar - kept in sync with fullscreen.css's scrollbar tokens */
+.preview-panel #markdownPreview::-webkit-scrollbar,
+.preview-panel .preview-content::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
 
-.resizable-container .preview-panel #markdownPreview::-webkit-scrollbar-track,
-.resizable-container .preview-panel .preview-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
+.preview-panel #markdownPreview::-webkit-scrollbar-track,
+.preview-panel .preview-content::-webkit-scrollbar-track {
+  background: var(--color-surface-muted);
   border-radius: 6px;
 }
 
-.resizable-container .preview-panel #markdownPreview::-webkit-scrollbar-thumb,
-.resizable-container .preview-panel .preview-content::-webkit-scrollbar-thumb {
-  background: #888;
+.preview-panel #markdownPreview::-webkit-scrollbar-thumb,
+.preview-panel .preview-content::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
   border-radius: 6px;
-  border: 2px solid #f1f1f1;
+  border: 2px solid var(--color-surface-muted);
 }
 
-.resizable-container .preview-panel #markdownPreview::-webkit-scrollbar-thumb:hover,
-.resizable-container .preview-panel .preview-content::-webkit-scrollbar-thumb:hover {
-  background: #555;
+.preview-panel #markdownPreview::-webkit-scrollbar-thumb:hover,
+.preview-panel .preview-content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
 }
 
-/* 确保滚动条始终可见 */
-.resizable-container .preview-panel #markdownPreview::-webkit-scrollbar-corner,
-.resizable-container .preview-panel .preview-content::-webkit-scrollbar-corner {
-  background: #f1f1f1;
+.preview-panel #markdownPreview::-webkit-scrollbar-corner,
+.preview-panel .preview-content::-webkit-scrollbar-corner {
+  background: var(--color-surface-muted);
 }

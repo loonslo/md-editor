@@ -138,7 +138,6 @@ resources: {
 md-editor/
 ├── scripts/
 │   ├── i18n.js                    # 核心 i18n 系统
-│   ├── popup.js                   # 主界面逻辑（已支持 i18n）
 │   └── fullscreen.js              # 全屏模式逻辑（已支持 i18n）
 ├── _locales/
 │   ├── en/
@@ -149,8 +148,7 @@ md-editor/
 │   │   └── messages.json          # 日文扩展元数据
 │   └── es/
 │       └── messages.json          # 西班牙语扩展元数据
-├── popup.html                     # 主界面（已支持 i18n）
-├── fullscreen.html                # 全屏界面（已支持 i18n）
+├── fullscreen.html                # 全屏界面（唯一入口，已支持 i18n）
 ├── manifest.json                  # 扩展配置（已支持多语言）
 └── INTERNATIONALIZATION.md        # 本文档
 ```

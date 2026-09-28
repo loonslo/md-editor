@@ -32,15 +32,13 @@ Open an issue with:
 
 ### Adding New Features
 
-1. **Popup mode** — edit `popup.html`, `popup.css`, `scripts/popup.js`
-2. **Fullscreen mode** — edit `fullscreen.html`, `styles/fullscreen.css`, `scripts/fullscreen.js`
-3. **Shared logic** — if the feature spans both modes, add to `scripts/shared/` or refactor common code
-4. **i18n** — add new strings to `_locales/` language files
-5. **Update manifest.json** if you add new permissions or resources
+1. **Editor UI** — edit `fullscreen.html`, `styles/fullscreen.css`, `scripts/fullscreen.js`
+2. **i18n** — add new string keys to the `resources` object in `scripts/i18n.js` (used for all in-page UI text); `_locales/` is only consulted by Chrome itself for manifest fields like the extension name/description
+3. **Update manifest.json** if you add new permissions or resources
 
 ### Testing i18n
 
-After adding a new string key, add entries to all `_locales/<lang>/messages.json` files.
+After adding a new string key, add entries to the `en`/`zh`/`ja`/`es` blocks in `scripts/i18n.js`. Only touch `_locales/<lang>/messages.json` if the string is a manifest field (`__MSG_*__`).
 
 ## License
 
